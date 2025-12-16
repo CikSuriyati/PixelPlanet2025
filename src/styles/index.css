@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+    /* Pixel & Planet - Light Blue Edition */
+    --bg-color: #60a5fa;
+    /* Sky Blue */
+    --bg-gradient-start: #3b82f6;
+    --bg-gradient-end: #93c5fd;
+
+    --accent-primary: #00ff00;
+    /* Neon Green */
+    --accent-shadow: #000000;
+    /* Black Shadow for text */
+
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --card-border: #000000;
+    --card-shadow: 4px 4px 0px 0px #000000;
+    /* Pixel shadow */
+
+    /* Typography */
+    --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-pixel: 'Press Start 2P', cursive;
+
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.2) 2px, transparent 2px),
+        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.2) 2px, transparent 2px);
+    background-size: 40px 40px;
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Pixel Card Style */
+.pixel-card {
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    box-shadow: var(--card-shadow);
+    border-radius: 8px;
+    /* Slightly rounded or 0 for pure pixel */
+    transition: transform 0.1s;
+}
+
+.pixel-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px #000000;
+}
+
+h1.pixel-title {
+    font-family: var(--font-pixel);
+    color: var(--accent-primary);
+    text-shadow:
+        3px 3px 0 #000,
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+    line-height: 1.5;
+    text-transform: uppercase;
+}
+
+header {
+    margin-bottom: 3rem;
+}
