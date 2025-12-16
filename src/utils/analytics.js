@@ -60,9 +60,17 @@ export const fetchAndParseData = async () => {
         // Process Evaluations
         const evaluations = responsesData.map((row, index) => {
             // ... (Same parsing logic as before) ...
-            const scoreColumns = Object.keys(row).filter(key =>
-                key.startsWith('[') && key.endsWith(']')
-            );
+            // STRICT: Only use these 8 columns for the General Score
+            const scoreColumns = [
+                '[Introduction]',
+                '[Content / Explanation]',
+                '[Organization / Flow]',
+                '[Environmental Message (Go Green)]',
+                '[Creativity & Innovation]',
+                '[Presentation Delivery]',
+                '[Audio Quality]',
+                '[Visual Quality]'
+            ];
 
             let totalScore = 0;
             let validScores = 0;
@@ -124,34 +132,41 @@ export const calculateGroupAverages = (evaluations) => {
 };
 
 export const getAwardFinalists = (evaluations) => {
-    // Collect unique finalists for each category
-    const campusFinalists = new Set();
-    const innovationFinalists = new Set();
-    const presentationFinalists = new Set();
+    // Count votes for each category per group
+    const campusVotes = {};
+    const innovationVotes = {};
+    const presentationVotes = {};
 
     evaluations.forEach(ev => {
-        // If the jury said "Yes", add this group to the finalists
+        const group = ev.groupNo;
+
+        // Count "Yes" votes for each award category
         if (ev.awards.campusNomination.toLowerCase() === 'yes') {
-            campusFinalists.add(ev.groupNo);
+            campusVotes[group] = (campusVotes[group] || 0) + 1;
         }
         if (ev.awards.innovationNomination.toLowerCase() === 'yes') {
-            innovationFinalists.add(ev.groupNo);
+            innovationVotes[group] = (innovationVotes[group] || 0) + 1;
         }
         if (ev.awards.presentationNomination.toLowerCase() === 'yes') {
-            presentationFinalists.add(ev.groupNo);
+            presentationVotes[group] = (presentationVotes[group] || 0) + 1;
         }
     });
+
+    // Filter groups that have 2 or more "Yes" votes (both juries)
+    const campusFinalists = Object.keys(campusVotes).filter(group => campusVotes[group] >= 2);
+    const innovationFinalists = Object.keys(innovationVotes).filter(group => innovationVotes[group] >= 2);
+    const presentationFinalists = Object.keys(presentationVotes).filter(group => presentationVotes[group] >= 2);
 
     return [
         {
             name: 'Best Campus Solution',
-            finalists: Array.from(campusFinalists),
+            finalists: campusFinalists,
             fill: '#10b981',
             icon: '🌍'
         },
         {
             name: 'Most Innovative Idea',
-            finalists: Array.from(innovationFinalists),
+            finalists: innovationFinalists,
             fill: '#3b82f6',
             icon: '💡'
         },
